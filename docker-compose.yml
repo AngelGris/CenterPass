@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17
+    container_name: centerpass_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATABASSE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - centerpass_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  centerpass_postgres_data:
