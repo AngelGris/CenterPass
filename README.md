@@ -12,19 +12,6 @@ The goal of CenterPass is to build an automated netball analytics engine that en
 
 ---
 
-## 🏗 Architecture
-
-The system is structured into clear layers:
-
-centerpass/
-│
-├── app/ # FastAPI web layer
-├── core/ # Computer vision & event detection logic
-├── database/ # SQLAlchemy models & persistence layer
-├── alembic/ # Database migrations
-├── dashboard/ # (Future) Frontend analytics UI
-
-
 ### Key Technologies
 
 - **FastAPI** – REST API layer
