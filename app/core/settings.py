@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     DATABASE_PORT: int
     DATABASE_URL: str
     VIDEO_STORAGE_PATH: str
+    FRAME_STORAGE_PATH: str
 
     class Config:
         env_file = ".env"

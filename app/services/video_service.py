@@ -3,25 +3,35 @@ import shutil
 from uuid import uuid4
 
 from fastapi import UploadFile
+from sqlalchemy.orm import Session
 
 from app.core.settings import settings
+from database.models.video import Video
 
 UPLOAD_DIR = settings.VIDEO_STORAGE_PATH
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-async def save_video(file: UploadFile):
+async def save_video(
+    file: UploadFile,
+    db: Session,
+):
     file_extension = file.filename.split(".")[-1]
-    unique_filename = f"{uuid4()}.{file_extension}"
-    file_path = os.path.join(UPLOAD_DIR, unique_filename)
+    video_id = uuid4()
+    unique_filename = f"{video_id}.{file_extension}"
+    filepath = os.path.join(UPLOAD_DIR, unique_filename)
 
-    with open(file_path, "wb") as buffer:
+    with open(filepath, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    return {
-        "filename": unique_filename,
-        "original_filename": file.filename,
-        "content_type": file.content_type,
-        "location": file_path,
-    }
+    video = Video(
+        id=video_id,
+        filename=file.filename,
+        filepath=filepath,
+    )
+
+    db.add(video)
+    db.commit()
+
+    return {"video_id": video.id}
